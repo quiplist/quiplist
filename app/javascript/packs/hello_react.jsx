@@ -5,9 +5,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import './stylesheets/application.scss';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Hello = props => (
-  <div>Hello {props.name}! fuck you!</div>
+  <div>Hello {props.name}!</div>
 )
 
 Hello.defaultProps = {
@@ -20,7 +22,7 @@ Hello.propTypes = {
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <Hello name="React Christine Marie Lee" />,
+    <Hello name="React" />,
     document.body.appendChild(document.createElement('div')),
   )
 })

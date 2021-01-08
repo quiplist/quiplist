@@ -1,8 +1,5 @@
 Rails.application.routes.draw do
-  root to: 'pages#home'
-  get 'pages/event_code'
-  get 'pages/about_us'
-  get 'pages/contact_us'
+  root to: 'homepage#index'
   devise_for :users, controllers: {
         sessions: 'users/sessions'
       }
