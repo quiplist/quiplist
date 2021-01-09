@@ -9,9 +9,19 @@ Rails.application.routes.draw do
       end
     end
   end
-  devise_for :users, controllers: {
-        sessions: 'users/sessions'
-      }
+  
+  devise_for :users,
+    defaults: { format: :json },
+    path: '',
+    path_names: {
+      sign_in: 'api/login',
+      sign_out: 'api/logout',
+      registration: 'api/signup'
+    },
+    controllers: {
+      sessions: 'sessions',
+      registrations: 'registrations'
+    }
 
   # scope 'admin' do
   #   resources :events do

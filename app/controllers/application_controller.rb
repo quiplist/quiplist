@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   respond_to :json
-  before_action :configure_permitted_parameters, if: :devise_controller?
+  #before_action :configure_permitted_parameters, if: :devise_controller?
 
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
@@ -44,9 +44,18 @@ class ApplicationController < ActionController::Base
     }
   end
 
-  def configure_permitted_parameters
-    added_attrs = [:username, :email, :password, :password_confirmation, :remember_me]
-    devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
-    devise_parameter_sanitizer.permit :account_update, keys: added_attrs
+  def event_not_found
+    err = { 'errors': [
+      {
+        'status': '404',
+        'event_code': 'Not Found'
+      }
+    ] }
   end
+
+  # def configure_permitted_parameters
+  #   added_attrs = [:username, :email, :password, :password_confirmation, :remember_me]
+  #   devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
+  #   devise_parameter_sanitizer.permit :account_update, keys: added_attrs
+  # end
 end
