@@ -16,27 +16,28 @@ class App extends Component {
     this.updateCurrentUser = this.updateCurrentUser.bind(this);
   }
   componentDidMount(){
-      // let that = this
-      // axios.get('/users/check_for_user',{
-      // })
-      // .then(function(response){
-      //   if(response.data.email){
-      //     that.setState({
-      //       currentUser: response.data.email
-      //     })
-      //   } else {
-      //     that.setState({
-      //       currentUser: null
-      //     })
-      //   }
-      // })
-      // .catch(function(error){
-      //   console.log(error);
-      // })
+      const url = "/api/v1/users/check_for_user";
+
+      fetch(url).then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Network response was not ok.");
+      }).then(response => {
+        console.log("==========" + response);
+        if(response) {
+          this.setState({ currentUser: response });
+        } else {
+          that.setState({ currentUser: null });
+        }
+      }).catch(error => {
+          console.log(error.message);
+          // this.props.history.push("/");
+      });
     }
-  updateCurrentUser(email) {
+  updateCurrentUser(user) {
       this.setState({
-        currentUser: email
+        currentUser: user
       })
     }
 

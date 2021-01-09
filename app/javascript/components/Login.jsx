@@ -3,24 +3,31 @@ import {Animated} from "react-animated-css";
 import Logo from "images/logo.png";
 
 class Login extends React.Component{
-    constructor(props){
-        super(props);
-        this.state={
-            isVisible: true,
-            event: {}
-        }
-
-        this.toggleLogin = this.toggleLogin.bind(this);
-        //this.addHtmlEntities = this.addHtmlEntities.bind(this);
+  constructor(props){
+    super(props);
+    this.state={
+      isVisible: true,
+      event: {},
+      eventCode: "",
+      email: "",
+      password: ""
     }
 
+    this.toggleLogin = this.toggleLogin.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onSubmitSignIn = this.onSubmitSignIn.bind(this);
+    this.onSubmitSignUp = this.onSubmitSignUp.bind(this);
+    this.stripHtmlEntities = this.stripHtmlEntities.bind(this);
+    //this.addHtmlEntities = this.addHtmlEntities.bind(this);
+  }
 
-    toggleLogin = () => {
-        this.setState({
-          isVisible: !this.state.isVisible
-        })
-    }
-    componentDidMount() {
+  toggleLogin = () => {
+    this.setState({
+      isVisible: !this.state.isVisible
+    })
+  }
+
+  componentDidMount() {
     const {
       match: {
         params: { eventCode }
@@ -35,12 +42,99 @@ class Login extends React.Component{
           return response.json();
         }
         throw new Error("Network response was not ok.");
-      })
-      .then(response => this.setState({ event: response }))
-      .catch(error => {
+      }).then(response => {
+        this.setState({ event: response })
+        this.setState({ eventCode: eventCode })
+      }).catch(error => {
         console.log(error.message);
         this.props.history.push("/");
     });
+  }
+
+  onChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
+  onSubmitSignIn(event) {
+    event.preventDefault();
+    const email = this.state.email;
+    const password = this.state.password;
+    const event_code = this.state.eventCode;
+    const url = "/api/login";
+
+    if (email.length == 0 || password.length == 0)
+      return;
+
+    const body = {
+      user: {
+        email,
+        password
+      },
+      event_code
+    };
+    console.log(JSON.stringify(body))
+
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "X-CSRF-Token": token,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    }).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error("Network response was not ok.");
+    }).then(response => {
+      console.log(response)
+      //this.props.history.push(`/recipe/${response.id}`);
+    }).catch(error => console.log(error.message));
+
+  }
+
+  onSubmitSignUp(event) {
+    event.preventDefault();
+    const email = this.state.email;
+    const password = this.state.email;
+    const evnt = this.state.event;
+    const url = "/api/login";
+
+    if (email.length == 0 || password.length == 0)
+      return;
+
+    const body = {
+      email,
+      password,
+      evnt
+    };
+    console.log(JSON.stringify(body))
+
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "X-CSRF-Token": token,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    }).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error("Network response was not ok.");
+    }).then(response => {
+      console.log(response)
+      //this.props.history.push(`/recipe/${response.id}`);
+    }).catch(error => console.log(error.message));
+
+  }
+
+  stripHtmlEntities(str) {
+    return String(str)
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
   }
 
   render (){
@@ -65,19 +159,19 @@ class Login extends React.Component{
               <Animated animationIn="zoomIn" animationOut="zoomOut" isVisible={this.state.isVisible}>
                   <div className="row first-row-wrapper align-items-center">
                       <div className="col-sm col-lg-6 px-0 column-wrapper">
-                          <h2>Hello, Friend! {event.title}</h2>
+                          <h2>Hello, Friend!</h2>
                           <p>Enter your personal details
                               and enjoy your event with us</p>
                           <button className="btn-signup" onClick={this.toggleLogin}>Sign Up</button>
                       </div>
                       <div className="col-sm col-lg-6 px-0 column-wrapper">
                           <img src={Logo} className="img-fluid mb-3" alt="logo"/>
-                          <form className="text-center">
+                          <form className="text-center" onSubmit={this.onSubmitSignIn}>
                               <div className="mb-3">
-                                  <input type="text" className="form-control" id="username" placeholder="Username/Email"/>
+                                  <input type="text" className="form-control" id="email" placeholder="Email" name="email" required onChange={this.onChange}/>
                               </div>
                               <div className="mb-1">
-                                  <input type="password" className="form-control" id="userPassword" placeholder="Password"/>
+                                  <input type="password" className="form-control" id="password" placeholder="Password" name="password" required onChange={this.onChange}/>
                               </div>
                               <div className="mb-0">
                                   <a type="submit" className="forgotPassword" href="#">Forgot your password?</a>

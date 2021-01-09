@@ -7,9 +7,21 @@ Rails.application.routes.draw do
         get '/find_by_event_code/:event_code', to: 'events#find_by_event_code', on: :collection
         post :upload_brochure, to: 'events#upload_brochure', on: :member
       end
+
+      resources :guest_list, only: [:index] do
+        post :set_status, on: :collection
+        post :batch_approved, on: :collection
+        post :batch_denied, on: :collection
+        post :set_raffle_status, on: :collection
+        post :batch_eligible, on: :collection
+        post :batch_not_eligible, on: :collection
+      end
+      resources :users, only: [:index, :show, :create, :update, :destroy] do
+        get :check_for_user, to: 'users#check_for_user', on: :collection
+      end
     end
   end
-  
+
   devise_for :users,
     defaults: { format: :json },
     path: '',

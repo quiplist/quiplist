@@ -40,7 +40,7 @@ class Home extends React.Component {
 
     if (eventCode.length == 0)
       return;
-      
+
     fetch(url).then(response => {
       console.log(response)
         if (response.ok) {
@@ -93,7 +93,7 @@ class Home extends React.Component {
                     <div className="row justify-content-end align-items-center mt-2">
                         <div className="col-9 text-start">
                             <div className="form-check px-0">
-                                <input type="checkbox" id="terms"  onChange={this.handleCheck} defaultChecked={this.state.checked}/>
+                                <input type="checkbox" id="terms" onChange={this.handleCheck} defaultChecked={this.state.checked}/>
                                 <label className="form-check-label px-1" htmlFor="terms">
                                     I agree to the Terms of Service
                                     and Privacy Policy.

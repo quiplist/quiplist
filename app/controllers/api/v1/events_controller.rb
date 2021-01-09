@@ -20,7 +20,7 @@ class Api::V1::EventsController < ApplicationController
   def find_by_event_code
     @event = Event.find_by(event_code: params[:event_code])
     if @event.nil?
-      render json: event_not_found, status: 404
+      render json: event_not_found, status: 400, adapter: :json
     else
       render json: @event, adapter: :json
     end
@@ -58,7 +58,7 @@ class Api::V1::EventsController < ApplicationController
   def event_not_found
     err = { 'errors': [
       {
-        'status': '404',
+        'status': '400',
         'event_code': 'Not Found'
       }
     ] }

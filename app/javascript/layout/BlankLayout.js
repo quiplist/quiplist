@@ -4,15 +4,15 @@ import { BrowserRouter as Switch, Route } from "react-router-dom";
 import AdminLogin from "../admin/Login";
 
 class BlankLayout extends React.Component {
-    render () {
-        return (
-            <div>
-                <Switch>
-                  <Route exact path="/admin/login" render={(props) => <AdminLogin {...props} /> }/>
-                </Switch>
-            </div>
-        );
-    }
+  render () {
+    return (
+      <div>
+        <Switch>
+          <Route exact path="/admin/login" render={(props) => <AdminLogin {...props} /> }/>
+        </Switch>
+      </div>
+    );
+  }
 }
 
 
