@@ -53,16 +53,14 @@ class PrimaryLayout extends React.Component {
                     right isOpen={this.state.menuOpen}
                     onStateChange={(state) => this.handleStateChange(state)}>
                         <Link to="/" onClick={() => this.closeMenu()}>Home</Link>
-                        <Link to="/login" onClick={() => this.closeMenu()}>Login</Link>
-
                     </Menu>
                   </div>
                 </div>
               </div>
-            </div>
+            // </div>
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route path="/login" component={Login} />
+              <Route path="/:eventCode/login" component={Login} />
             </Switch>
           </Router>
         );

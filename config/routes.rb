@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root to: 'homepage#index'
-
+  # get '/*path' => 'homepage#index'
   namespace :api do
     namespace :v1 do
       resources :events, only: [:index, :show, :create, :update, :destroy] do

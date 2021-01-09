@@ -14,8 +14,9 @@ class App extends Component {
         <BrowserRouter>
           <Switch>
             <Route exact path="/" render={(props) => <PrimaryLayout {...props} /> } />
+            <Route exact path="/:eventCode/login" render={(props) => <PrimaryLayout {...props} /> } />
             // <Route exact path="/randompicker" render={(props) => <BlankLayout/> } />
-            <Route exact path="/admin/login" render={(props) => <BlankLayout {...props} /> } />
+            // <Route exact path="/admin/login" render={(props) => <BlankLayout {...props} /> } />
             // <Route exact path="/admin/dashboard" render={(props) => <BlankLayout/> } />
            </Switch>
         </BrowserRouter>
