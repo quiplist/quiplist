@@ -2,38 +2,51 @@ import React from 'react';
 import Placeholder1 from "images/placeholder1.jpg";
 import Placeholder2 from "images/placeholder2.jpg";
 import Placeholder3 from "images/placeholder3.jpg";
-
+import Top from "images/top.png";
+import Bottom from "images/bottom.png";
 
 class Home extends React.Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     eventCode: '',
+  //     isTermChecked: false,
+  //     event: {}
+  //   };
+  //
+  //   this.handleInputChange = this.handleInputChange.bind(this);
+  //   this.onClickTerm = this.onClickTerm.bind(this);
+  //   this.handleSubmit = this.handleSubmit.bind(this);
+  // }
+  //
+  // handleInputChange(event) {
+  //   this.setState({eventCode: event.target.value});
+  // }
+  // // NOTE: if many input
+  // // handleInputChange(event) {
+  // //   const target = event.target;
+  // //   const value = target.value;
+  // //   const name = target.name;
+  // //
+  // //   this.setState({
+  // //     [name]: value
+  // //   });
+  // // }
+  //
+  // onClickTerm(event) {
+  //   this.setState({ isTermChecked: event.target.value });
+  // }
+
   constructor(props) {
     super(props);
     this.state = {
-      eventCode: '',
-      isTermChecked: false,
-      event: {}
+      checked: false
     };
-
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.onClickTerm = this.onClickTerm.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCheck = this.handleCheck.bind(this);
   }
 
-  handleInputChange(event) {
-    this.setState({eventCode: event.target.value});
-  }
-  // NOTE: if many input
-  // handleInputChange(event) {
-  //   const target = event.target;
-  //   const value = target.value;
-  //   const name = target.name;
-  //
-  //   this.setState({
-  //     [name]: value
-  //   });
-  // }
-
-  onClickTerm(event) {
-    this.setState({ isTermChecked: event.target.value });
+  handleCheck = () => {
+    this.setState({checked: !this.state.checked});
   }
 
   handleSubmit(event) {
@@ -94,7 +107,8 @@ class Home extends React.Component {
                 </div>
             </div>
         </section>
-        <section id="section2" className="blue-bg py-3">
+        <section id="section2" className="blue-bg_home py-3">
+            <div className="overlap_top-bg"><img src={Top} alt="top" className="img-fluid"></img></div>
             <div className="container">
                 <div className="row text-center py-5">
                     <div className="col col-lg-12">
@@ -106,17 +120,17 @@ class Home extends React.Component {
                         <p>Click <a href="login.html">here</a> to login and join an event.</p>
                     </div>
                 </div>
-                <form className="event-code-wrapper mb-3" onSubmit={this.handleSubmit}>
-                    <input type="text" placeholder="Event Code:" name="eventCode" value={this.state.eventCode} onChange={this.handleInputChange }/>
+                <form className="event-code-wrapper mb-3">
+                    <input type="text" id="eventCode" placeholder="Event Code:"/>
                     <label htmlFor="eventCode">
                         Please enter your unique code here. This code is exclusive
                         and can only be used once and during the event phase only.
                         Sharing this code may cost you to lose your event access.
                     </label>
                     <div className="row justify-content-end align-items-center mt-2">
-                        <div className="col-9">
+                        <div className="col-9 text-start">
                             <div className="form-check px-0">
-                                <input type="checkbox" name="isTermChecked" checked={this.state.isTermChecked} onChange={this.onClickTerm}/>
+                                <input type="checkbox" id="terms"  onChange={this.handleCheck} defaultChecked={this.state.checked}/>
                                 <label className="form-check-label px-1" htmlFor="terms">
                                     I agree to the Terms of Service
                                     and Privacy Policy.
@@ -124,11 +138,12 @@ class Home extends React.Component {
                             </div>
                         </div>
                         <div className="col-3 text-end">
-                            <button type="submit" className="btn btn-event-code" disabled={!this.state.isTermChecked}>Join</button>
+                            { this.state.checked ? <button type="submit" className="btn btn-event-code">Join</button> : <button type="submit" className="btn btn-event-code" disabled>Join</button> }
                         </div>
                     </div>
                 </form>
             </div>
+            <div className="overlap_bottom-bg"><img src={Bottom} alt="top" className="img-fluid"></img></div>
         </section>
       </div>
     );
