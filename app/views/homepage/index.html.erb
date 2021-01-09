@@ -1,6 +1,19 @@
-<h1>Hello World</h1>
-<button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
-  Tooltip on top
-</button>
-
-<%#= image_pack_tag 'placeholder1.jpg' %>
+<%#= react_component("HomeMenu") %>
+<div class="home">
+  <section id="section1">
+      <div id="sliderIndicators" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <%= image_pack_tag 'placeholder1.jpg', class: "d-block w-100" %>
+            </div>
+            <div class="carousel-item">
+              <%= image_pack_tag 'placeholder2.jpg', class: "d-block w-100" %>
+            </div>
+            <div class="carousel-item">
+              <%= image_pack_tag 'placeholder3.jpg', class: "d-block w-100" %>
+            </div>
+          </div>
+      </div>
+  </section>
+  <%= react_component("HomeEventCode") %>
+</div>
