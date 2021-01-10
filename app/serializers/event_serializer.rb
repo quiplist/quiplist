@@ -32,4 +32,8 @@ class EventSerializer < ActiveModel::Serializer
     object.stream_type_name
   end
 
+  def event_type_name
+    object.event_type_name
+  end
+
 end

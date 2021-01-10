@@ -16,7 +16,7 @@ class SessionsController < Devise::SessionsController
       puts "====== inside else"
       self.resource = warden.authenticate!(auth_options)
       puts "=========== #{resource}"
-      
+      GuestList.create_guest_list(resource, event)
       puts "=========== #{resource_name}"
       sign_in(resource_name, resource)
       puts "=========== #{block_given?}\n\n"

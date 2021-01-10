@@ -88,8 +88,4 @@ class User < ApplicationRecord
   def client?
     role == CLIENT
   end
-
-  def self.create_guest_list
-
-  end
 end

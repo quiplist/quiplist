@@ -78,11 +78,31 @@ class Event < ApplicationRecord
     status == DONE
   end
 
+  def public?
+    event_type == PUBLIC
+  end
+
+  def private?
+    event_type == PRIVATE
+  end
+
+  def uploaded_stream?
+    stream_type == UPLOAD
+  end
+
+  def lived_stream?
+    stream_type == STREAM_KEY
+  end
+
   def status_name
     STATUSES[status]
   end
 
   def stream_type_name
     STREAM_TYPES[stream_type]
+  end
+
+  def event_type_name
+    EVENT_TYPES[stream_type]
   end
 end

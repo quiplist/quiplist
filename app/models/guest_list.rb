@@ -19,9 +19,9 @@
 #  index_guest_lists_on_user_id      (user_id)
 #
 class GuestList < ApplicationRecord
-  
+
   belongs_to :user, class_name: 'User', foreign_key: 'user_id'
-  belongs_to :approver, class_name: 'User', foreign_key: 'approver_id'
+  belongs_to :approver, class_name: 'User', foreign_key: 'approver_id', optional: true
   belongs_to :event
   has_many :answers
   has_many :raffles
@@ -86,4 +86,23 @@ class GuestList < ApplicationRecord
     status == DENIED
   end
 
+  def self.create_guest_list(user, event)
+    if user.client? && !event.guest_lists.exists?(user: user)
+      raffle_number = generate_raffle_number(event)
+      status = event.public? ? APPROVED : PENDING
+      GuestList.create(user: user, event: event, raffle_number: raffle_number, status: status)
+    end
+  end
+
+  private
+
+  # def included?
+
+  def generate_raffle_number(event)
+    loop do
+      raffle_number = rand(9999)
+      break temp_raffle_number unless GuestList.where(raffle_number: raffle_number, event: event).exists?
+    end
+    raffle_number
+  end
 end

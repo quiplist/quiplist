@@ -18,7 +18,7 @@
 #
 class Raffle < ApplicationRecord
   belongs_to :event
-  belongs_to :winner, class_name: 'GuestList', foreign_key: 'guest_list_id'
+  belongs_to :winner, class_name: 'GuestList', foreign_key: 'guest_list_id', optional: true
 
   RANDOM_NAMES = 0
   SPIN_WHEEL = 1
@@ -39,4 +39,41 @@ class Raffle < ApplicationRecord
     ONGOING => "On going",
     DONE => "Done"
   }
+
+  scope :queued, -> { where(status: QUEUED) }
+  scope :ongoing, -> { where(status: ONGOING) }
+  scope :done, -> { where(status: DONE) }
+  scope :sorted, -> { order(created_at: :asc) }
+
+  def queued?
+    status == QUEUED
+  end
+
+  def ongoing?
+    status == ONGOING
+  end
+
+  def done?
+    status == DONE
+  end
+
+  def random_name?
+    raffle_type == RANDOM_NAMES
+  end
+
+  def spin_wheel?
+    raffle_type == SPIN_WHEEL
+  end
+
+  def lotto?
+    raffle_type == LOTTO
+  end
+
+  def status_name
+    STATUSES[status]
+  end
+
+  def raffle_type_name
+    RAFFLE_TYPES[raffle_type]
+  end
 end
