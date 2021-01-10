@@ -72,7 +72,6 @@ class Login extends React.Component{
       },
       event_code
     };
-    console.log(JSON.stringify(body))
 
     const token = document.querySelector('meta[name="csrf-token"]').content;
     fetch(url, {
