@@ -18,13 +18,9 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def find_by_event_code
-    @event = Event.find_by(event_code: params[:event_code])
-    if @event.nil?
-      render json: event_not_found, status: 400, adapter: :json
-    else
-      render json: @event, adapter: :json
-    end
-
+    @event = find_event(params[:event_code])
+    raise ActiveRecord::RecordNotFound.new("not found") if @event.nil?
+    render_jsonapi_response @event
   end
 
   def create
@@ -53,14 +49,5 @@ class Api::V1::EventsController < ApplicationController
   def resource_params
     ActiveModelSerializers::Deserialization.jsonapi_parse!(params, only: [:title, :description, :event_code,
       :start_date, :end_date, :start_time, :end_time, :event_type, :stream_type, :stream_key, :stream_video])
-  end
-
-  def event_not_found
-    err = { 'errors': [
-      {
-        'status': '400',
-        'event_code': 'Not Found'
-      }
-    ] }
   end
 end

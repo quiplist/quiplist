@@ -42,13 +42,13 @@ class Home extends React.Component {
       return;
 
     fetch(url).then(response => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error("Network response was not ok.");
-      }).then(response => {
-        this.props.history.push(`/events/${eventCode}/login`);
-      }).catch(error => console.log(error.message));
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(response);
+    }).then(response => {
+      this.props.history.push(`/events/${eventCode}/login`);
+    }).catch(error => console.log(error));
   }
 
   render (){

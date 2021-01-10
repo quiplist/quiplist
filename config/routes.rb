@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root to: 'homepage#index'
   # get '/*path' => 'homepage#index'
-  namespace :api do
+  namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :events, only: [:index, :show, :create, :update, :destroy] do
         get '/find_by_event_code/:event_code', to: 'events#find_by_event_code', on: :collection

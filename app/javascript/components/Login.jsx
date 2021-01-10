@@ -70,7 +70,8 @@ class Login extends React.Component{
         email,
         password
       },
-      event_code
+      event_code,
+      is_admin: false
     };
 
     const token = document.querySelector('meta[name="csrf-token"]').content;
@@ -85,7 +86,8 @@ class Login extends React.Component{
       if (response.ok) {
         return response.json();
       }
-      throw new Error("Network response was not ok.");
+      console.log(response)
+      throw new Error(response);
     }).then(response => {
       console.log(response)
       //this.props.history.push(`/recipe/${response.id}`);

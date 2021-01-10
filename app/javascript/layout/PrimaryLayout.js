@@ -57,7 +57,7 @@ class PrimaryLayout extends React.Component {
                 </div>
               </div>
             </div>
-          // </div>
+          </div>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/events/:eventCode/login" component={Login} />

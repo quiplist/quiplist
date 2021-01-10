@@ -2,12 +2,24 @@ class SessionsController < Devise::SessionsController
   skip_before_action :verify_authenticity_token, only: [:create, :destroy]
 
   def create
-    event = Event.find_by(event_code: params[:event_code])
-    if event.nil?
-      render json: event_not_found
-    else
+    is_admin = params[:is_admin] || false
+
+    if is_admin
       self.resource = warden.authenticate!(auth_options)
       sign_in(resource_name, resource)
+      yield resource if block_given?
+      respond_with resource, location: after_sign_in_path_for(resource)
+    else
+      event = find_event(params[:event_code])
+      puts "================= #{event.inspect}"
+      raise ActiveRecord::RecordNotFound.new("not found") if event.nil?
+      puts "====== inside else"
+      self.resource = warden.authenticate!(auth_options)
+      puts "=========== #{resource}"
+      
+      puts "=========== #{resource_name}"
+      sign_in(resource_name, resource)
+      puts "=========== #{block_given?}\n\n"
       yield resource if block_given?
       respond_with resource, location: after_sign_in_path_for(resource)
     end

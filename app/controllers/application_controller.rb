@@ -1,25 +1,23 @@
 class ApplicationController < ActionController::Base
   respond_to :json
-  #before_action :configure_permitted_parameters, if: :devise_controller?
 
-  rescue_from ActiveRecord::RecordNotFound, with: :not_found
+  rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 
-  def not_found
-    render json: {
-      'errors': [
-        {
-          'status': '404',
-          "message": 'Not Found'
-        }
-      ]
-    }, status: 404
+  def render_not_found_response(exception)
+    render json: { message: "Record Not Found", errors: exception.message }, status: :not_found
   end
 
-  def render_jsonapi_response(resource)
+
+  def render_unprocessable_entity_response(exeception)
+    render json: { message: "Validation Failed", errors: ValidationErrorsSerializer.new(exception.record).serialize }, status: :unprocessable_entity
+  end
+
+  def render_jsonapi_response(resource, status=400)
     if resource.errors.empty?
       render json: resource, adapter: :json
     else
-      render json: { error: resource.errors }, status: 400
+      render json: { error: resource.errors }, status: status
     end
   end
 
@@ -44,18 +42,7 @@ class ApplicationController < ActionController::Base
     }
   end
 
-  def event_not_found
-    err = { 'errors': [
-      {
-        'status': '404',
-        'event_code': 'Not Found'
-      }
-    ] }
+  def find_event(event_code)
+    event = Event.find_by(event_code: params[:event_code])
   end
-
-  # def configure_permitted_parameters
-  #   added_attrs = [:username, :email, :password, :password_confirmation, :remember_me]
-  #   devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
-  #   devise_parameter_sanitizer.permit :account_update, keys: added_attrs
-  # end
 end
